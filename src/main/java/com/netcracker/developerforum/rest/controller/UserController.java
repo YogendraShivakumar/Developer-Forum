@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @EnableAutoConfiguration
-public class CreateUserController {
+public class UserController {
     @RequestMapping(value = "/registration",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public User createUser(@RequestBody User user){
         return user;
