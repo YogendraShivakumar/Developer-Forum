@@ -1,6 +1,8 @@
 package com.netcracker.developerforum.rest.controller;
 
 import com.netcracker.developerforum.beans.User;
+import com.netcracker.developerforum.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableAutoConfiguration
 public class UserController {
+    UserService userService;
+
     @RequestMapping(value = "/registration",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public User createUser(@RequestBody User user){
-        return user;
+        return userService.createUser(user);
     }
 }
