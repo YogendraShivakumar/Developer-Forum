@@ -1,4 +1,4 @@
-package com.netcracker.developerforum.swagger;
+package com.yogendra.developerforum.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class SwaggerConfig {
     public Docket swaggerSettings() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.netcracker.developerforum.rest.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.yogendra.developerforum.rest.controller"))
                 .build()
                 .apiInfo(apiInfo());
     }

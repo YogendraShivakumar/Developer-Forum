@@ -1,8 +1,8 @@
-package com.netcracker.developerforum.beans;
+package com.yogendra.developerforum.beans;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import static com.netcracker.developerforum.constants.ForumConstants.ACTIVE;
+import static com.yogendra.developerforum.constants.ForumConstants.ACTIVE;
 
 /**
  * Created by yogs0616 on 11/28/2017.

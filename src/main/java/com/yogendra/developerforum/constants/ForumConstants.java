@@ -1,4 +1,4 @@
-package com.netcracker.developerforum.constants;
+package com.yogendra.developerforum.constants;
 
 /**
  * Created by yogs0616 on 11/28/2017.

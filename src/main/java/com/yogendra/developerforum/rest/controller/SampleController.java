@@ -1,4 +1,4 @@
-package com.netcracker.developerforum.rest.controller;
+package com.yogendra.developerforum.rest.controller;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
