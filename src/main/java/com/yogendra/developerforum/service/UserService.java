@@ -20,4 +20,24 @@ public interface UserService {
      * @return
      */
     List<User> getUsers();
+
+    /**
+     * Retrieve the user with specified Username
+     * @param userName
+     * @return
+     */
+    User getUser(String userName);
+
+    /**
+     * Delete the user with specified User Name
+     * @param userName
+     */
+    void deleteUser(String userName);
+
+    /**
+     * Update the user's information with specified
+     * @param userName
+     * @return
+     */
+    User updateUser(String userName, User user);
 }

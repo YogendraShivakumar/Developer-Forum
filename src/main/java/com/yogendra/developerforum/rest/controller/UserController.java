@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +31,20 @@ public class UserController {
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getUsers() {
         return userService.getUsers();
+    }
+
+    @RequestMapping(value = "/updateUser/{userName}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User updateUser(@RequestParam String userName, @RequestBody User user) {
+        return userService.updateUser(userName, user);
+    }
+
+    @RequestMapping(value = "/deleteUser/{userName}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteUser(@RequestParam String userName) {
+        userService.deleteUser(userName);
+    }
+
+    @RequestMapping(value = "/getUser/{userName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User getUser(@RequestParam String userName) {
+        return userService.getUser(userName);
     }
 }
