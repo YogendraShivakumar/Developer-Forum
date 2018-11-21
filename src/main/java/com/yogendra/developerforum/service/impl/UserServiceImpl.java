@@ -1,5 +1,6 @@
 package com.yogendra.developerforum.service.impl;
 
+import com.yogendra.developerforum.beans.Login;
 import com.yogendra.developerforum.beans.User;
 import com.yogendra.developerforum.configuration.SpringMongoConfig;
 import com.yogendra.developerforum.service.UserService;
@@ -12,6 +13,8 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yogendra.developerforum.constants.ForumConstants.ACTIVE;
+
 public class UserServiceImpl implements UserService {
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -23,8 +26,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        mongoOperation.insert(user, "user");
-        return user;
+        User createdUser = new User();
+        Login login = new Login();
+        createdUser.setEmail(user.getEmail());
+        createdUser.setFirstName(user.getFirstName());
+        createdUser.setLastName(user.getLastName());
+        createdUser.setMobileNumber(user.getMobileNumber());
+
+        login.setPassword(user.getRegistration().getPassword());
+        login.setUserName(user.getRegistration().getUserName());
+        login.setUserState(ACTIVE);
+
+        mongoOperation.insert(createdUser, "user");
+        mongoOperation.insert(login, "login");
+        return createdUser;
     }
 
     @Override
@@ -34,6 +49,4 @@ public class UserServiceImpl implements UserService {
         logger.debug("Users : {}", users);
         return users;
     }
-
-
 }

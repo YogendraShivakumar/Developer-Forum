@@ -1,5 +1,6 @@
 package com.yogendra.developerforum.rest.controller;
 
+import com.yogendra.developerforum.beans.Login;
 import com.yogendra.developerforum.beans.User;
 import com.yogendra.developerforum.service.UserService;
 import com.yogendra.developerforum.service.impl.UserServiceImpl;
@@ -25,13 +26,13 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
     UserService userService = new UserServiceImpl();
 
-    @RequestMapping(value = "/registration",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public User createUser(@RequestBody User user){
+    @RequestMapping(value = "/createUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 }

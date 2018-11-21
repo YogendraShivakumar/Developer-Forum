@@ -13,10 +13,9 @@ public class User {
     private String lastName;
     private String email;
     private String mobileNumber;
-    private String userState = ACTIVE;
-    private String password;
+    private Login registration;
 
-    public User(){
+    public User() {
 
     }
 
@@ -25,8 +24,14 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.mobileNumber = mobileNumber;
-        this.userState = userState;
-        this.password = password;
+    }
+
+    public Login getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(Login registration) {
+        this.registration = registration;
     }
 
     public String getFirstName() {
@@ -61,30 +66,13 @@ public class User {
         this.mobileNumber = mobileNumber;
     }
 
-    public String getUserState() {
-        return userState;
-    }
-
-    public void setUserState(String userState) {
-        this.userState = userState;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String toString() {
         return "User{" +
-                "First Name" +firstName+'\''+
-                "Last Name" +lastName+'\''+
-                "Email" +email+'\''+
-                "Mobile Number" +mobileNumber+'\''+
-                "User Status" +userState+'\''+
+                "First Name" + firstName + '\'' +
+                "Last Name" + lastName + '\'' +
+                "Email" + email + '\'' +
+                "Mobile Number" + mobileNumber + '\'' +
                 "}";
     }
 }
