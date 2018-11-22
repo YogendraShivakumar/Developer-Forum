@@ -33,18 +33,27 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @RequestMapping(value = "/updateUser/{userName}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/updateUser", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public User updateUser(@RequestParam String userName, @RequestBody User user) {
         return userService.updateUser(userName, user);
     }
 
-    @RequestMapping(value = "/deleteUser/{userName}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteUser(@RequestParam String userName) {
         userService.deleteUser(userName);
     }
 
-    @RequestMapping(value = "/getUser/{userName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/users/getUser", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public User getUser(@RequestParam String userName) {
-        return userService.getUser(userName);
+        User user = userService.getUser(userName);
+        if (user == null) {
+            throw new RuntimeException("User Doesn't Exists Please check the username");
+        }
+        return user;
+    }
+
+    @RequestMapping(value = "users/updatePassword", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void updatePassword(String username, String password) {
+        userService.updatePassword(username, password);
     }
 }

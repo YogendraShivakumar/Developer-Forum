@@ -9,14 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.StringUtils;
-import sun.rmi.runtime.Log;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,15 +58,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String username) {
-        User user = (User) mongoOperation.findOne(new Query(Criteria.where("email").is(username)), User.class, "user");
+        User user = mongoOperation.findOne(new Query(Criteria.where("email").is(username)), User.class, "user");
         return user;
     }
 
     @Override
     public void deleteUser(String userName) {
         try {
-            mongoOperation.findAndRemove(new Query(Criteria.where("email").is(userName)), User.class, "user");
-            mongoOperation.findAndRemove(new Query(Criteria.where("userName").is(userName)), Login.class, "login");
+            User user = mongoOperation.findAndRemove(new Query(Criteria.where("email").is(userName)), User.class, "user");
+            Login login = mongoOperation.findAndRemove(new Query(Criteria.where("userName").is(userName)), Login.class, "login");
+
+            if (user == null || login == null) {
+                throw new RuntimeException("Problem occurred while deleting User " + userName + ". User may Doesn't exists");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,29 +80,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(String userName, User user) {
         BasicDBObject object = new BasicDBObject();
-        List<String> arr = new ArrayList<>();
-        arr.add("email");
+        String[] array = new String[]{};
         if (user.getEmail() != null && !StringUtils.isEmpty(user.getEmail())) {
             throw new RuntimeException("You cannot update Email as it is used as username");
         }
-
         if (user.getFirstName() != null && !StringUtils.isEmpty(user.getFirstName())) {
             object.put("firstName", user.getFirstName());
-        } else {
-            arr.add("firstName");
         }
         if (user.getLastName() != null && !StringUtils.isEmpty(user.getLastName())) {
             object.put("lastName", user.getLastName());
-        } else {
-            arr.add("lastName");
         }
         if (user.getMobileNumber() != null && !StringUtils.isEmpty(user.getMobileNumber())) {
             object.put("mobileNumber", user.getMobileNumber());
-        } else {
-            arr.add("mobileNumber");
         }
-
-        User modifiedUser = mongoOperation.findAndModify(new Query(Criteria.where("email").is(userName)), Update.fromDBObject(object, arr.toArray().toString()), User.class, "user");
+        FindAndModifyOptions options = new FindAndModifyOptions();
+        options.upsert(false);
+        User modifiedUser = mongoOperation.findAndModify(new Query(Criteria.where("email").is(userName)),
+                Update.fromDBObject(object, array), options, User.class, "user");
         return modifiedUser;
+    }
+
+    @Override
+    public void updatePassword(String userName, String password) {
+        User user = getUser(userName);
+        Update update = new Update();
+        if (user != null) {
+            mongoOperation.findAndModify(new Query(Criteria.where("userName").is(userName)),
+                    update.set("password", password), Login.class, "login");
+        } else {
+            throw new RuntimeException("User Doesn't Exists");
+        }
     }
 }

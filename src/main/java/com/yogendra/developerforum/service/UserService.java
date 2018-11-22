@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserService {
     /**
      * Create the user with requested parameter
+     *
      * @param user
      * @return
      */
@@ -17,12 +18,14 @@ public interface UserService {
 
     /**
      * list the users from the database
+     *
      * @return
      */
     List<User> getUsers();
 
     /**
      * Retrieve the user with specified Username
+     *
      * @param userName
      * @return
      */
@@ -30,14 +33,24 @@ public interface UserService {
 
     /**
      * Delete the user with specified User Name
+     *
      * @param userName
      */
     void deleteUser(String userName);
 
     /**
      * Update the user's information with specified
+     *
      * @param userName
      * @return
      */
     User updateUser(String userName, User user);
+
+    /**
+     * Update password of specified user.
+     *
+     * @param userName
+     * @param password
+     */
+    void updatePassword(String userName, String password);
 }
