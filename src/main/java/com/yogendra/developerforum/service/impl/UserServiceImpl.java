@@ -79,24 +79,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(String userName, User user) {
-        BasicDBObject object = new BasicDBObject();
-        String[] array = new String[]{};
+
+        Update update = new Update();
         if (user.getEmail() != null && !StringUtils.isEmpty(user.getEmail())) {
             throw new RuntimeException("You cannot update Email as it is used as username");
         }
         if (user.getFirstName() != null && !StringUtils.isEmpty(user.getFirstName())) {
-            object.put("firstName", user.getFirstName());
+            update.set("firstName", user.getFirstName());
         }
         if (user.getLastName() != null && !StringUtils.isEmpty(user.getLastName())) {
-            object.put("lastName", user.getLastName());
+            update.set("lastName", user.getLastName());
         }
         if (user.getMobileNumber() != null && !StringUtils.isEmpty(user.getMobileNumber())) {
-            object.put("mobileNumber", user.getMobileNumber());
+            update.set("mobileNumber", user.getMobileNumber());
         }
-        FindAndModifyOptions options = new FindAndModifyOptions();
-        options.upsert(false);
+
         User modifiedUser = mongoOperation.findAndModify(new Query(Criteria.where("email").is(userName)),
-                Update.fromDBObject(object, array), options, User.class, "user");
+                update, new FindAndModifyOptions().returnNew(true), User.class, "user");
         return modifiedUser;
     }
 
